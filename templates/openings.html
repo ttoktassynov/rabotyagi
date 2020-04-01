@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+  Публикация вакансий
+</h1>
+
+  
+<form action="/openings" method="post">
+    <input name="name" placeholder="Название вакансии" type="text">
+
+    <select name="types">
+        <option>Выберите тип</option>
+        {% for type in types %}
+        <option>{{type["type"]}}</option>
+        {% endfor %}
+    </select>
+    <select name="cities">
+        <option>Выберите город</option>
+        {% for city in cities %}
+        <option>{{city["city"]}}</option>
+        {% endfor %}
+    </select>
+    <button>Добавить</button>
+</form>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Название</th>
+            <th scope="col">Тип</th>
+            <th scope="col">Город</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for row in rows%}
+            <tr>
+            <td>{{row["id"]}}</td>
+            <td>{{row["name"]}}</td>
+            <td>{{row["type"]}}</td>
+            <td>{{row["city"]}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+
+
+  
+{% endblock %}
