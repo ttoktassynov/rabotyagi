@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from . import db
-from .models import Types, Openings, Cities
+from .models import Types, Openings, Cities, User
 from datetime import datetime
 
 main = Blueprint('main', __name__)
@@ -26,7 +26,7 @@ def openings():
             types=types, rows=openings, cities=cities)
     else:
         name = request.form.get("name")
-        type = request.form
+        type = request.form.get("type")
         user_id = current_user.id
         city = request.form.get("cities")
         type = request.form.get("types")
@@ -36,4 +36,13 @@ def openings():
         db.session.commit()
         flash("Вакансия успешно добавлена!")
         return redirect(url_for('main.openings'))
-    
+
+@main.route('/jobs', methods=['POST', 'GET'])
+def jobs():
+    types = Types.query.all()
+    openings = Openings.query.join(User, Openings.user_id==User.id)\
+        .add_columns(Openings.id, Openings.name, Openings.type, Openings.city, User.number)\
+        .all()
+    cities = Cities.query.all()
+    return render_template("jobs.html", types=types, rows=openings, cities=cities)
+   

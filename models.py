@@ -8,6 +8,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
+    number = db.Column(db.String(100), nullable=False)
+    worker = db.Column(db.Boolean(), unique=False, default=False)
     openings = db.relationship("Openings")
 
 class Openings(db.Model):
